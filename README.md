@@ -6,8 +6,9 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of cbiopourer is to facilitate creating of meta-data for data
-injestion of studies in cBioportal.
+The goal of cbiopourer is to facilitate the creation of meta-data for
+data injestion of studies in cBioportal. It helps pour data into
+cBioportal.
 
 ## Installation
 
