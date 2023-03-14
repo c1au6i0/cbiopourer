@@ -1,6 +1,6 @@
 Package: cbiopourer
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Pour data in cBioportal
 Version: 0.1.0
 Authors@R: 
     person(given = "Claudio",
@@ -8,8 +8,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "claudio.zanettini@gmail.com",
            comment = c(ORCID = "0000-0001-5043-8033"))
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Package that helps creating files for data injection in cBioportal.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
