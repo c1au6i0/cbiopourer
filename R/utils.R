@@ -1,6 +1,6 @@
 #' create meta study
 #'
-#' @param foder_path Path of foder where to save `meta_study.txt`.
+#' @param folder_path Path of folder where to save `meta_study.txt`.
 #' @param type_of_cancer The cancer type abbreviation, e.g., "brca". This should be the same cancer type as specified in the meta_cancer_type.txt file, if available. The type can be "mixed" for studies with multiple cancer types. Check href{https://gdc.cancer.gov/resources-tcga-users/tcga-code-tables/tcga-study-abbreviations}{link} for list of available.
 #' @param cancer_study_identifier A string used to uniquely identify this cancer study within the database, e.g., "brca_joneslab_2013".
 #' @param name The name of the cancer study, e.g., "Breast Cancer (Jones Lab 2013)".
@@ -12,10 +12,9 @@
 #' @param tags_file The file name containing custom study tags for the study tags.
 #' @param reference_genome The study reference genome (e.g. hg19, hg38). Without specifying this property, the study will be assigned to the reference genome specified in portal.properties (property ucsc.build).
 #' @seealso https://docs.cbioportal.org/file-formats/#cancer-study
-#' @return Write a tab delimited file in `folder_path` and return a `data.frame`.
+#' @return Write a tab delimited file in `folder_path` and returns a `data.frame`.
 #' @export
-create_meta_study <- function(
-                              foder_path = getwd(),
+create_meta_study <- function(folder_path = getwd(),
                               type_of_cancer,
                               cancer_study_identifier,
                               name,
@@ -25,20 +24,108 @@ create_meta_study <- function(
                               groups,
                               add_global_case_list = "false",
                               tags_file,
-                              reference_genome
-                              ) {
-
+                              reference_genome) {
   passed <- names(as.list(match.call())[-1])
-  passed <-  passed[!passed %in%  "foder_path"]
+  passed <- passed[!passed %in% "folder_path"]
   required_arg <- c("type_of_cancer", "cancer_study_identifier", "name")
   required_arg_missing <- required_arg[!required_arg %in% passed]
 
-  if(length(required_arg_missing) != 0 ) cli::cli_abort("The argument {.field {required_arg_missing}} are required.")
+  if (length(required_arg_missing) != 0) cli::cli_abort("The argument {.field {required_arg_missing}} are required.")
 
   arg_val <- unlist(lapply(passed, function(x) get(x)))
-  out   <- paste(passed, arg_val, sep = ": ")
+  out <- paste(passed, arg_val, sep = ": ")
 
-  file_path <- fs::path(foder_path, "meta_study.txt")
+  file_path <- fs::path(folder_path, "meta_study.txt")
   write.table(out, file = file_path, quote = FALSE, row.names = FALSE, col.names = FALSE, sep = "\t")
   out
 }
+
+
+#' create cancer type
+#'
+#' cBioPortal Doc indicates that "If the type_of_cancer specified in the `meta_study.txt` does not yet exist in the type_of_cancer database table,
+#' a meta_cancer_type.txt file is also mandatory." The function creates the meta file `meta_cancer_type.txt` and the data file associated with it `cancer_type.txt`.
+#'
+#' @param folder_path Path of folder where to save files.
+#' @param type_of_cancer The cancer type abbreviation, e.g., "brca".
+#' @param name  The name of the cancer type, e.g., "Breast Invasive Carcinoma".
+#' @param dedicated_color CSS color name of the color associated with this cancer study, e.g., "HotPink". See this href{https://www.w3.org/TR/css-color-3/#svg-color}{list}for supported names,
+#'    and follow the href{https://en.wikipedia.org/wiki/List_of_awareness_ribbons}{awareness ribbons} color schema. This color is associated with the cancer study on various web pages within
+#'    the cBioPortal.
+#' @param parent_type_of_cancer The type_of_cancer field of the cancer type of which this is a subtype, e.g., "Breast". ℹ️ : you can set parent to tissue, which is the reserved word to place the
+#'    given cancer type at "root" level in the "studies oncotree" that will be generated in the homepage (aka query page) of the portal.
+#' @seealso https://docs.cbioportal.org/file-formats/#cancer-study
+#' @return Write 2 tab delimited file in `folder_path`.
+#' @export
+create_cancer_type <- function(
+    folder_path = getwd(),
+    type_of_cancer,
+    name,
+    dedicated_color,
+    parent_type_of_cancer) {
+
+  passed <- names(as.list(match.call())[-1])
+  passed <- passed[!passed %in% "folder_path"]
+  required_arg <- c("type_of_cancer", "name", "dedicated_color", "parent_type_of_cancer")
+  required_arg_missing <- required_arg[!required_arg %in% passed]
+
+  if (length(required_arg_missing) != 0) cli::cli_abort("The argument {.field {required_arg_missing}} are required.")
+
+  file_path_meta <- fs::path(folder_path, "meta_cancer_type.txt")
+  cat("genetic_alteration_type: CANCER_TYPE\ndatatype: CANCER_TYPE\ndata_filename: cancer_type.txt", file = file_path_meta)
+
+  cli::cli_alert("File {.file {file_path_meta}} written.")
+
+
+  dat <-  unlist(lapply(required_arg, function(x) get(x)))
+
+  file_path_cancer_type <- file_path_meta <- fs::path(folder_path, "cancer_type.txt")
+  write(dat, file =   file_path_cancer_type, sep = "\t", ncolumns = length(dat))
+  cli::cli_alert("File {.file {file_path_cancer_type}} written.")
+
+}
+
+
+#' create meta clinical files
+#'
+#' Create metaclinical files `meta_clinical_sample.txt` or `meta_clinical_patient.txt` and relative data files `data_clinical_patient.txt` or
+#'  `data_clinical_sample.txt`
+#'
+#' @param folder_path Path of folder where to save files.
+#' @param cancer_study_identifier Same value specified in `meta_study.txt`.
+#' @param genetic_alteration_type CLINICAL.
+#' @param datatype one of `PATIENT_ATTRIBUTES` or `SAMPLE_ATTRIBUTES`.
+#' @param clinical_dat A dataframe with first column `PATIENT_ID` or `SAMPLE_ID` and other columns of interest.
+#' @param clinical_meta A dataframe with a column `var_int` containing `colnames(clinical_dat)`, a column `description` with description of variable
+#'.  and a column `datatype` with values `STRING`, `NUMBER` or `BOOLEAN`.
+#' @seealso https://docs.cbioportal.org/file-formats/#cancer-study
+#' @return Write 2 tab delimited file in `folder_path`.
+#' @export
+create_cancer_type <- function(
+    folder_path = getwd(),
+    type_of_cancer,
+    name,
+    dedicated_color,
+    parent_type_of_cancer) {
+
+  passed <- names(as.list(match.call())[-1])
+  passed <- passed[!passed %in% "folder_path"]
+  required_arg <- c("type_of_cancer", "name", "dedicated_color", "parent_type_of_cancer")
+  required_arg_missing <- required_arg[!required_arg %in% passed]
+
+  if (length(required_arg_missing) != 0) cli::cli_abort("The argument {.field {required_arg_missing}} are required.")
+
+  file_path_meta <- fs::path(folder_path, "meta_cancer_type.txt")
+  cat("genetic_alteration_type: CANCER_TYPE\ndatatype: CANCER_TYPE\ndata_filename: cancer_type.txt", file = file_path_meta)
+
+  cli::cli_alert("File {.file {file_path_meta}} written.")
+
+
+  dat <-  unlist(lapply(required_arg, function(x) get(x)))
+
+  file_path_cancer_type <- file_path_meta <- fs::path(folder_path, "cancer_type.txt")
+  write(dat, file =   file_path_cancer_type, sep = "\t", ncolumns = length(dat))
+  cli::cli_alert("File {.file {file_path_cancer_type}} written.")
+
+}
+
