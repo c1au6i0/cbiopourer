@@ -63,7 +63,6 @@ create_cancer_type <- function(
     name,
     dedicated_color,
     parent_type_of_cancer) {
-
   passed <- names(as.list(match.call())[-1])
   passed <- passed[!passed %in% "folder_path"]
   required_arg <- c("type_of_cancer", "name", "dedicated_color", "parent_type_of_cancer")
@@ -77,12 +76,11 @@ create_cancer_type <- function(
   cli::cli_alert("File {.file {file_path_meta}} written.")
 
 
-  dat <-  unlist(lapply(required_arg, function(x) get(x)))
+  dat <- unlist(lapply(required_arg, function(x) get(x)))
 
   file_path_cancer_type <- file_path_meta <- fs::path(folder_path, "cancer_type.txt")
-  write(dat, file =   file_path_cancer_type, sep = "\t", ncolumns = length(dat))
+  write(dat, file = file_path_cancer_type, sep = "\t", ncolumns = length(dat))
   cli::cli_alert("File {.file {file_path_cancer_type}} written.")
-
 }
 
 
@@ -95,37 +93,103 @@ create_cancer_type <- function(
 #' @param cancer_study_identifier Same value specified in `meta_study.txt`.
 #' @param genetic_alteration_type CLINICAL.
 #' @param datatype one of `PATIENT_ATTRIBUTES` or `SAMPLE_ATTRIBUTES`.
+#' @param clinical_meta A dataframe with a column `var_int` containing `colnames(clinical_dat)`, a column `description` with description of variable.
 #' @param clinical_dat A dataframe with first column `PATIENT_ID` or `SAMPLE_ID` and other columns of interest.
-#' @param clinical_meta A dataframe with a column `var_int` containing `colnames(clinical_dat)`, a column `description` with description of variable
-#'.  and a column `datatype` with values `STRING`, `NUMBER` or `BOOLEAN`.
+#' .  and a column `datatype` with values `STRING`, `NUMBER` or `BOOLEAN`, a numeric column called `attr_priority` and a an upper case name ot the attribute
+#' .  in column `attr_name`.
 #' @seealso https://docs.cbioportal.org/file-formats/#cancer-study
 #' @return Write 2 tab delimited file in `folder_path`.
 #' @export
-create_cancer_type <- function(
+create_meta_clinical <- function(
     folder_path = getwd(),
-    type_of_cancer,
-    name,
-    dedicated_color,
-    parent_type_of_cancer) {
-
+    genetic_alteration_type = "CLINICAL",
+    cancer_study_identifier,
+    datatype,
+    clinical_dat,
+    clinical_meta) {
   passed <- names(as.list(match.call())[-1])
   passed <- passed[!passed %in% "folder_path"]
-  required_arg <- c("type_of_cancer", "name", "dedicated_color", "parent_type_of_cancer")
+  required_arg <- c("cancer_study_identifier", "clinical_meta", "datatype")
   required_arg_missing <- required_arg[!required_arg %in% passed]
 
   if (length(required_arg_missing) != 0) cli::cli_abort("The argument {.field {required_arg_missing}} are required.")
 
-  file_path_meta <- fs::path(folder_path, "meta_cancer_type.txt")
-  cat("genetic_alteration_type: CANCER_TYPE\ndatatype: CANCER_TYPE\ndata_filename: cancer_type.txt", file = file_path_meta)
+  expected_datatype <- c("PATIENT_ATTRIBUTES", "SAMPLE_ATTRIBUTES")
 
-  cli::cli_alert("File {.file {file_path_meta}} written.")
+  if (!datatype %in% expected_datatype) {
+    cli::cli_abort("The argument datatype needs to be one of {.field {expected_datatype}}.")
+  }
+
+  check_meta_clinical(clinical_dat = clinical_dat, clinical_meta =  clinical_meta, datatype = datatype)
+
+  if (datatype == "PATIENT_ATTRIBUTES") {
+    meta_data_filename <- "meta_clinical_patient.txt"
+    data_filename <- "data_clinical_patient.txt"
+  } else {
+    meta_data_filename <- "meta_clinical_sample.txt"
+    data_filename <- "data_clinical_sample.txt"
+  }
+
+  # Create metaclinical sample or metaclinical patient
+  cat("cancer_study_identifier: ",
+    cancer_study_identifier, "\n",
+    "genetic_alteration_type: ", "CLINICAL", "\n",
+    "datatype:  ", datatype, "\n",
+    "data_filename: ", data_filename, "\n",
+    file = fs::path(folder_path, meta_data_filename), sep = ""
+  )
+
+  cli::cli_alert("The file {.file {meta_data_filename}} has been generated.")
+
+  clinical_dat <- clinical_dat[,  clinical_meta$attr_name]
+  clinical_meta_t <- as.data.frame(t(clinical_meta))
+  clinical_meta_t$V1 <- paste0("#", clinical_meta_t$V1)
+  names(clinical_meta_t)  <-  clinical_meta_t[1,]
+
+  clinical_meta_t <- clinical_meta_t[-1, ]
+
+  # Reorder columns
+
+  names(clinical_dat) <- names(clinical_meta_t)
+  full_clinical_tab <- rbind(clinical_meta_t, clinical_dat)
 
 
-  dat <-  unlist(lapply(required_arg, function(x) get(x)))
-
-  file_path_cancer_type <- file_path_meta <- fs::path(folder_path, "cancer_type.txt")
-  write(dat, file =   file_path_cancer_type, sep = "\t", ncolumns = length(dat))
-  cli::cli_alert("File {.file {file_path_cancer_type}} written.")
-
+  write.table(full_clinical_tab, file = fs::path(folder_path, data_filename), sep = "\t", row.names = FALSE, quote = FALSE)
+  cli::cli_alert("The file {.file {data_filename}} has been generated.")
 }
 
+
+#' check meta clinical
+#'
+#' Verify  dataframes used for `create_meta_clinical`
+#'
+#' @param clinical_dat
+#' @param clinical_meta
+#' @param datatype One of `PATIENT_ATTRIBUTES` or `SAMPLE_ATTRIBUTES`.
+#'
+#' @return stop if requirement are not met
+#' @export
+check_meta_clinical <- function(clinical_dat, clinical_meta, datatype) {
+  if (!setequal(names(clinical_dat), clinical_meta$attr_name)) {
+    cli::cli_abort("The columns of clinical_dat are not present in clinical_meta$attr_name.")
+  }
+
+  if (datatype == "SAMPLE_ATTRIBUTES") {
+    check_attr <- !any(c("SAMPLE_ID", "PATIENT_ID") %in% clinical_meta$attr_name)
+  } else {
+    check_attr <- !"PATIENT_ID" %in% clinical_meta$attr_name
+  }
+
+  if (check_attr) cli::cli_abort("`SAMPLE_ or PATIENT_ID` column missing in clinical_meta")
+
+
+  if (!all(names(clinical_meta) %in% c("var_int", "description", "datatype", "attr_priority", "attr_name"))) {
+    cli::cli_abort("datatype doesn't contain columns `var_int`, `description`, `datatype`. `attr_priority`, `attr_name`")
+  }
+
+  if (!all(clinical_meta$datatype %in% c("STRING", "NUMBER", "BOOLEAN"))) {
+    cli::cli_abort("Values of datatype$datatype need to be one of STRING, NUMBER OF BOLLEAN.")
+  }
+
+  cli::cli_alert("Integrity of data checked.")
+}
