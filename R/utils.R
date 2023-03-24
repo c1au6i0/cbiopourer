@@ -84,9 +84,9 @@ create_cancer_type <- function(
 }
 
 
-#' create meta clinical files
+#' create  clinical files
 #'
-#' Create metaclinical files `meta_clinical_sample.txt` or `meta_clinical_patient.txt` and relative data files `data_clinical_patient.txt` or
+#' Create clinical files `meta_clinical_sample.txt` or `meta_clinical_patient.txt` and relative data files `data_clinical_patient.txt` or
 #'  `data_clinical_sample.txt`
 #'
 #' @param folder_path Path of folder where to save files.
@@ -97,10 +97,13 @@ create_cancer_type <- function(
 #' @param clinical_dat A dataframe with first column `PATIENT_ID` or `SAMPLE_ID` and other columns of interest.
 #' .  and a column `datatype` with values `STRING`, `NUMBER` or `BOOLEAN`, a numeric column called `attr_priority` and a an upper case name ot the attribute
 #' .  in column `attr_name`.
+#' @details
+#' See Note on survival plots in https://docs.cbioportal.org/file-formats/#cancer-study for additional details on
+#' survival plots.
 #' @seealso https://docs.cbioportal.org/file-formats/#cancer-study
 #' @return Write 2 tab delimited file in `folder_path`.
 #' @export
-create_meta_clinical <- function(
+create_clinical <- function(
     folder_path = getwd(),
     genetic_alteration_type = "CLINICAL",
     cancer_study_identifier,
@@ -141,14 +144,16 @@ create_meta_clinical <- function(
 
   cli::cli_alert("The file {.file {meta_data_filename}} has been generated.")
 
+  # Reorder columns
   clinical_dat <- clinical_dat[,  clinical_meta$attr_name]
   clinical_meta_t <- as.data.frame(t(clinical_meta))
   clinical_meta_t$V1 <- paste0("#", clinical_meta_t$V1)
-  names(clinical_meta_t)  <-  clinical_meta_t[1,]
 
+
+  # take header from first column and remove it
+  names(clinical_meta_t)  <-  clinical_meta_t[1,]
   clinical_meta_t <- clinical_meta_t[-1, ]
 
-  # Reorder columns
 
   names(clinical_dat) <- names(clinical_meta_t)
   full_clinical_tab <- rbind(clinical_meta_t, clinical_dat)
@@ -158,38 +163,52 @@ create_meta_clinical <- function(
   cli::cli_alert("The file {.file {data_filename}} has been generated.")
 }
 
-
-#' check meta clinical
+#' create expression files
 #'
-#' Verify  dataframes used for `create_meta_clinical`
+#' Create expression files `meta_clinical_sample.txt` and relative data files `data_expression.txt`.
 #'
-#' @param clinical_dat
-#' @param clinical_meta
-#' @param datatype One of `PATIENT_ATTRIBUTES` or `SAMPLE_ATTRIBUTES`.
-#'
-#' @return stop if requirement are not met
+#' @param folder_path Path of folder where to save files.
+#' @param cancer_study_identifier Same value specified in `meta_study.txt`.
+#' @param genetic_alteration_type MRNA_EXPRESSION.
+#' @param datatype one of `CONTINUOUS`, `DISCRETE` or `Z-SCORE`.
+#' @param stable_id Check `Supported stable_id values for MRNA_EXPRESSION` in https://docs.cbioportal.org/file-formats/#expression-data.
+#' @param source_stable_id Required when both conditions are true: (1) datatype = Z-SCORE and (2)
+#' this study contains GSVA data. Should contain stable_id of the expression file for which this Z-SCORE file is the statistic.
+#' @param show_profile_in_analysis_tab false (you can set to true if Z-SCORE to enable it in the oncoprint, for example).
+#' @param profile_name A name for the expression data, e.g., "mRNA expression (microarray)".
+#' @param profile_description A description of the expression data, e.g., "Expression levels (Agilent microarray).".
+#' @param df_expr  A dataframe or matrix with expression.
+#' @param gene_panel Optional gene panel stable id.
+#' @seealso https://docs.cbioportal.org/file-formats/#cancer-study
+#' @return Write 2 tab delimited file in `folder_path`.
 #' @export
-check_meta_clinical <- function(clinical_dat, clinical_meta, datatype) {
-  if (!setequal(names(clinical_dat), clinical_meta$attr_name)) {
-    cli::cli_abort("The columns of clinical_dat are not present in clinical_meta$attr_name.")
-  }
-
-  if (datatype == "SAMPLE_ATTRIBUTES") {
-    check_attr <- !any(c("SAMPLE_ID", "PATIENT_ID") %in% clinical_meta$attr_name)
-  } else {
-    check_attr <- !"PATIENT_ID" %in% clinical_meta$attr_name
-  }
-
-  if (check_attr) cli::cli_abort("`SAMPLE_ or PATIENT_ID` column missing in clinical_meta")
-
-
-  if (!all(names(clinical_meta) %in% c("var_int", "description", "datatype", "attr_priority", "attr_name"))) {
-    cli::cli_abort("datatype doesn't contain columns `var_int`, `description`, `datatype`. `attr_priority`, `attr_name`")
-  }
-
-  if (!all(clinical_meta$datatype %in% c("STRING", "NUMBER", "BOOLEAN"))) {
-    cli::cli_abort("Values of datatype$datatype need to be one of STRING, NUMBER OF BOLLEAN.")
-  }
-
-  cli::cli_alert("Integrity of data checked.")
-}
+# create_expression <- function(
+#     folder_path = getwd(),
+#     cancer_study_identifier,
+#     genetic_alteration_type = "MRNA_EXPRESSION",
+#     datatype,
+#     stable_id,
+#     source_stable_id = NULL,
+#     show_profile_in_analysis_tab = FALSE,
+#     profile_name,
+#     profile_description,
+#     df_expr,
+#     gene_panel = NULL
+#     ) {
+#   browser()
+#   passed <- names(as.list(match.call())[-1])
+#   passed <- passed[!passed %in% "folder_path"]
+#   required_arg <- c("cancer_study_identifier", "datatype", "stable_id", "profile_name", "df_expr", "profile_description")
+#   required_arg_missing <- required_arg[!required_arg %in% passed]
+#
+#   if (length(required_arg_missing) != 0) cli::cli_abort("The argument {.field {required_arg_missing}} are required.")
+#
+#   # cat("cancer_study_identifier: ",
+#   #     cancer_study_identifier, "\n",
+#   #     "genetic_alteration_type: ", "CLINICAL", "\n",
+#   #     "datatype:  ", datatype, "\n",
+#   #     "data_filename: ", data_filename, "\n",
+#   #     file = fs::path(folder_path, meta_data_filename), sep = ""
+#   # )
+#
+# }
