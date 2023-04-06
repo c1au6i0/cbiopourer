@@ -12,7 +12,7 @@
 #' @param tags_file The file name containing custom study tags for the study tags.
 #' @param reference_genome The study reference genome (e.g. hg19, hg38). Without specifying this property, the study will be assigned to the reference genome specified in portal.properties (property ucsc.build).
 #' @seealso https://docs.cbioportal.org/file-formats/#cancer-study
-#' @return Write a tab delimited file in `folder_path` and returns a `data.frame`.
+#' @return Write a tab delimited file in `folder_path`.
 #' @export
 create_meta_study <- function(folder_path = getwd(),
                               type_of_cancer,
@@ -25,19 +25,16 @@ create_meta_study <- function(folder_path = getwd(),
                               add_global_case_list = "false",
                               tags_file,
                               reference_genome) {
-  passed <- names(as.list(match.call())[-1])
-  passed <- passed[!passed %in% "folder_path"]
-  required_arg <- c("type_of_cancer", "cancer_study_identifier", "name")
-  required_arg_missing <- required_arg[!required_arg %in% passed]
+  required_arg <- c("type_of_cancer", "cancer_study_identifier", "name", "folder_path")
+  all_args <- handler::handle_required_args(required_arg = required_arg, get_arg = TRUE)
 
-  if (length(required_arg_missing) != 0) cli::cli_abort("The argument {.field {required_arg_missing}} are required.")
+  all_args <- all_args[names(all_args) != "folder_path"]
 
-  arg_val <- unlist(lapply(passed, function(x) get(x)))
-  out <- paste(passed, arg_val, sep = ": ")
+  out <- paste(names(all_args), all_args, sep = ": ")
 
   file_path <- fs::path(folder_path, "meta_study.txt")
-  write.table(out, file = file_path, quote = FALSE, row.names = FALSE, col.names = FALSE, sep = "\t")
-  out
+  utils::write.table(out, file = file_path, quote = FALSE, row.names = FALSE, col.names = FALSE, sep = "\t")
+  cli::cli_alert("File {.file {file_path}} written.")
 }
 
 
@@ -58,17 +55,15 @@ create_meta_study <- function(folder_path = getwd(),
 #' @return Write 2 tab delimited file in `folder_path`.
 #' @export
 create_cancer_type <- function(
-    folder_path = getwd(),
+    folder_path,
     type_of_cancer,
     name,
     dedicated_color,
     parent_type_of_cancer) {
-  passed <- names(as.list(match.call())[-1])
-  passed <- passed[!passed %in% "folder_path"]
-  required_arg <- c("type_of_cancer", "name", "dedicated_color", "parent_type_of_cancer")
-  required_arg_missing <- required_arg[!required_arg %in% passed]
+  required_arg <- c("type_of_cancer", "name", "dedicated_color", "parent_type_of_cancer", "folder_path")
+  all_args <- handler::handle_required_args(required_arg = required_arg, get_arg = TRUE)
 
-  if (length(required_arg_missing) != 0) cli::cli_abort("The argument {.field {required_arg_missing}} are required.")
+  all_args <- all_args[!names(all_args) %in% "folder_path"]
 
   file_path_meta <- fs::path(folder_path, "meta_cancer_type.txt")
   cat("genetic_alteration_type: CANCER_TYPE\ndatatype: CANCER_TYPE\ndata_filename: cancer_type.txt", file = file_path_meta)
@@ -76,10 +71,10 @@ create_cancer_type <- function(
   cli::cli_alert("File {.file {file_path_meta}} written.")
 
 
-  dat <- unlist(lapply(required_arg, function(x) get(x)))
+  out <- paste(names(all_args), all_args, sep = ": ")
 
-  file_path_cancer_type <- file_path_meta <- fs::path(folder_path, "cancer_type.txt")
-  write(dat, file = file_path_cancer_type, sep = "\t", ncolumns = length(dat))
+  file_path_cancer_type <- fs::path(folder_path, "cancer_type.txt")
+  write(out, file = file_path_cancer_type, sep = "\t", ncolumns = 1)
   cli::cli_alert("File {.file {file_path_cancer_type}} written.")
 }
 
@@ -104,26 +99,21 @@ create_cancer_type <- function(
 #' @return Write 2 tab delimited file in `folder_path`.
 #' @export
 create_clinical <- function(
-    folder_path = getwd(),
+    folder_path,
     genetic_alteration_type = "CLINICAL",
     cancer_study_identifier,
     datatype,
     clinical_dat,
     clinical_meta) {
-  passed <- names(as.list(match.call())[-1])
-  passed <- passed[!passed %in% "folder_path"]
-  required_arg <- c("cancer_study_identifier", "clinical_meta", "datatype")
-  required_arg_missing <- required_arg[!required_arg %in% passed]
 
-  if (length(required_arg_missing) != 0) cli::cli_abort("The argument {.field {required_arg_missing}} are required.")
+  required_arg <- c("cancer_study_identifier", "clinical_meta", "datatype", "folder_path")
+  handler::handle_required_args(
+    required_arg = required_arg,
+    get_arg = FALSE
+  )
 
-  expected_datatype <- c("PATIENT_ATTRIBUTES", "SAMPLE_ATTRIBUTES")
 
-  if (!datatype %in% expected_datatype) {
-    cli::cli_abort("The argument datatype needs to be one of {.field {expected_datatype}}.")
-  }
-
-  check_meta_clinical(clinical_dat = clinical_dat, clinical_meta =  clinical_meta, datatype = datatype)
+  check_clinical(clinical_dat = clinical_dat, clinical_meta = clinical_meta, datatype = datatype)
 
   if (datatype == "PATIENT_ATTRIBUTES") {
     meta_data_filename <- "meta_clinical_patient.txt"
@@ -133,34 +123,35 @@ create_clinical <- function(
     data_filename <- "data_clinical_sample.txt"
   }
 
+  path_meta_data_filename <- fs::path(folder_path, meta_data_filename)
   # Create metaclinical sample or metaclinical patient
   cat("cancer_study_identifier: ",
     cancer_study_identifier, "\n",
     "genetic_alteration_type: ", "CLINICAL", "\n",
     "datatype:  ", datatype, "\n",
     "data_filename: ", data_filename, "\n",
-    file = fs::path(folder_path, meta_data_filename), sep = ""
+    file = path_meta_data_filename, sep = ""
   )
 
-  cli::cli_alert("The file {.file {meta_data_filename}} has been generated.")
+  cli::cli_alert("The file {.file {path_meta_data_filename}} has been generated.")
 
   # Reorder columns
-  clinical_dat <- clinical_dat[,  clinical_meta$attr_name]
+  clinical_dat <- clinical_dat[, clinical_meta$attr_name]
   clinical_meta_t <- as.data.frame(t(clinical_meta))
   clinical_meta_t$V1 <- paste0("#", clinical_meta_t$V1)
 
 
   # take header from first column and remove it
-  names(clinical_meta_t)  <-  clinical_meta_t[1,]
+  names(clinical_meta_t) <- clinical_meta_t[1, ]
   clinical_meta_t <- clinical_meta_t[-1, ]
 
 
   names(clinical_dat) <- names(clinical_meta_t)
   full_clinical_tab <- rbind(clinical_meta_t, clinical_dat)
 
-
-  write.table(full_clinical_tab, file = fs::path(folder_path, data_filename), sep = "\t", row.names = FALSE, quote = FALSE)
-  cli::cli_alert("The file {.file {data_filename}} has been generated.")
+  path_data_file_name <- fs::path(folder_path, data_filename)
+  utils::write.table(full_clinical_tab, file = path_data_file_name, sep = "\t", row.names = FALSE, quote = FALSE)
+  cli::cli_alert("The file {.file {path_data_file_name}} has been generated.")
 }
 
 #' create expression files
@@ -177,38 +168,63 @@ create_clinical <- function(
 #' @param show_profile_in_analysis_tab false (you can set to true if Z-SCORE to enable it in the oncoprint, for example).
 #' @param profile_name A name for the expression data, e.g., "mRNA expression (microarray)".
 #' @param profile_description A description of the expression data, e.g., "Expression levels (Agilent microarray).".
-#' @param df_expr  A dataframe or matrix with expression.
+#' @param expr_matrix  A matrix with expression data.
+#' @param gene_id_type Either "hugo" or "entrez".
 #' @param gene_panel Optional gene panel stable id.
 #' @seealso https://docs.cbioportal.org/file-formats/#cancer-study
 #' @return Write 2 tab delimited file in `folder_path`.
 #' @export
-# create_expression <- function(
-#     folder_path = getwd(),
-#     cancer_study_identifier,
-#     genetic_alteration_type = "MRNA_EXPRESSION",
-#     datatype,
-#     stable_id,
-#     source_stable_id = NULL,
-#     show_profile_in_analysis_tab = FALSE,
-#     profile_name,
-#     profile_description,
-#     df_expr,
-#     gene_panel = NULL
-#     ) {
-#   browser()
-#   passed <- names(as.list(match.call())[-1])
-#   passed <- passed[!passed %in% "folder_path"]
-#   required_arg <- c("cancer_study_identifier", "datatype", "stable_id", "profile_name", "df_expr", "profile_description")
-#   required_arg_missing <- required_arg[!required_arg %in% passed]
-#
-#   if (length(required_arg_missing) != 0) cli::cli_abort("The argument {.field {required_arg_missing}} are required.")
-#
-#   # cat("cancer_study_identifier: ",
-#   #     cancer_study_identifier, "\n",
-#   #     "genetic_alteration_type: ", "CLINICAL", "\n",
-#   #     "datatype:  ", datatype, "\n",
-#   #     "data_filename: ", data_filename, "\n",
-#   #     file = fs::path(folder_path, meta_data_filename), sep = ""
-#   # )
-#
-# }
+create_expression <- function(
+    folder_path,
+    cancer_study_identifier,
+    genetic_alteration_type = "MRNA_EXPRESSION",
+    datatype,
+    stable_id,
+    source_stable_id = NULL,
+    show_profile_in_analysis_tab = FALSE,
+    profile_name,
+    profile_description,
+    expr_matrix,
+    gene_id_type,
+    gene_panel = NULL) {
+  required_arg <- c(
+    "cancer_study_identifier",
+    "datatype",
+    "stable_id",
+    "profile_name",
+    "expr_matrix",
+    "profile_description",
+    "folder_path",
+    "gene_id_type"
+  )
+  all_args <- handler::handle_required_args(required_arg = required_arg, get_arg = TRUE)
+
+  arg_val <- all_args[!unlist(lapply(all_args, is.null))]
+  arg_val <- arg_val[!names(arg_val) %in% c("expr_matrix", "folder_path", "gene_id_type")]
+
+  out <- paste(names(arg_val), arg_val, sep = ": ")
+  out <- c(out, "data_filename: data_expression.txt")
+
+  file_path <- fs::path(folder_path, "meta_expression.txt")
+  utils::write.table(out, file = file_path, quote = FALSE, row.names = FALSE, col.names = FALSE, sep = "\t")
+  cli::cli_alert("The file {.file meta_expression.txt} has been generated.")
+
+
+  check_expr(expr_matrix)
+  if (!gene_id_type %in% c("hugo", "entrez")) cli::cli_abort("The {field gene_id_type} needs to be either 'hugo' or 'entrez")
+
+
+  expr_df <- data.frame(expr_matrix)
+  expr_df[, "gene"] <- row.names(expr_df)
+  new_order <- c("gene", names(expr_df)[!names(expr_df) %in% "gene"])
+  expr_df_r <- expr_df[, new_order]
+  if (gene_id_type == "hugo") {
+    names(expr_df_r)[1] <- "Hugo_Symbol"
+  } else {
+    names(expr_df_r)[1] <- "Entrez_Gene_Id"
+  }
+
+  file_path_data <- fs::path(folder_path, "data_expression.txt")
+  utils::write.table(expr_df_r, file = file_path_data, quote = FALSE, row.names = FALSE, col.names = FALSE, sep = "\t")
+  cli::cli_alert("The file {.file data_expression.txt} has been generated.")
+}

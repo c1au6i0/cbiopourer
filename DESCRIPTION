@@ -20,6 +20,7 @@ Config/testthat/edition: 3
 Imports: 
     cli,
     fs,
-    rlang
+    handler
+Remotes: c1au6i0/handler
 Depends: 
     R (>= 2.10)

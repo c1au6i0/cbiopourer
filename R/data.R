@@ -6,3 +6,19 @@
 #' However, for custom datasets either one of these stable_id can be chosen.
 #' @source <https://docs.cbioportal.org/file-formats/#supported-stable_id-values-for-mrna_expression>
 "stable_id_table"
+
+
+#' counts
+#'
+#' Am example of count matrix with 100 genes and 28 samples. Counts have been generated randomly.
+"counts"
+
+#' df_samples
+#'
+#' An example dataframe of sample info related to the `counts` matrix.
+"df_samples"
+
+#' df_samples_datatype
+#'
+#' An example dataframe of sample info datatype to be used
+"df_samples_datatype"

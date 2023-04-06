@@ -5,7 +5,7 @@
 \title{create meta study}
 \usage{
 create_meta_study(
-  foder_path = getwd(),
+  folder_path = getwd(),
   type_of_cancer,
   cancer_study_identifier,
   name,
@@ -19,7 +19,7 @@ create_meta_study(
 )
 }
 \arguments{
-\item{foder_path}{Path of foder where to save \code{meta_study.txt}.}
+\item{folder_path}{Path of folder where to save \code{meta_study.txt}.}
 
 \item{type_of_cancer}{The cancer type abbreviation, e.g., "brca". This should be the same cancer type as specified in the meta_cancer_type.txt file, if available. The type can be "mixed" for studies with multiple cancer types. Check href{https://gdc.cancer.gov/resources-tcga-users/tcga-code-tables/tcga-study-abbreviations}{link} for list of available.}
 
@@ -42,7 +42,7 @@ create_meta_study(
 \item{reference_genome}{The study reference genome (e.g. hg19, hg38). Without specifying this property, the study will be assigned to the reference genome specified in portal.properties (property ucsc.build).}
 }
 \value{
-Write a tab delimited file in \code{folder_path} and return a \code{data.frame}.
+Write a tab delimited file in \code{folder_path}.
 }
 \description{
 create meta study
