@@ -11,7 +11,7 @@ check_clinical <- function(clinical_dat, clinical_meta, datatype) {
 
 
   if (!setequal(names(clinical_dat), clinical_meta$attr_name)) {
-    cli::cli_abort("The columns of clinical_dat are not present in clinical_meta$attr_name.")
+    cli::cli_abort("The columns of {.field clinical_dat} are not present in {.field clinical_meta$attr_name}.")
   }
 
   # Data Types
