@@ -32,26 +32,54 @@ devtools::install_github("c1au6i0/cbiopourer")
 
 ## Use 
 
-The meta_study, meta_clinical and the respective clinical data are required to load a study into the portal. The next sessions describe how to create those files using `cbiopourer`
+The meta study, meta clinical and the respective clinical data are required to load a study into the portal. The next sessions describe how to create those files using `cbiopourer`
 
 
-### Meta Study
+### Meta Study and Cancer type
 
-The meta cancer study (`meta_study.txt` contains metadata about the cancer study.
+The meta cancer study (`meta_study.txt`) contains metadata about the cancer study.
+The required arguments are the one indicated in the example below. The dcoumentation of the function reports the description of the field as provided by the cBioportal website.
 
 ```{r}
 library(cbiopourer)
 
 # the Identifier for the study
-cancer_study_identifier <- 
+cancer_study_identifier <- "example_study_2023"
+
+# The directory where to create the file.
+dir_out <- tempdir()
   
 create_meta_study(
   folder_path = dir_out,
   type_of_cancer = "ptcls",
   cancer_study_identifier = cancer_study_identifier,
-  name = "Peripheral T-cell Example",
+  name = "Peripheral T-cell example",
   description = "Bulk RNA example"
 )
 ```
 
 
+The function generate the file in the format accepted by cBioportal.
+
+```
+type_of_cancer: ptcls
+cancer_study_identifier: example_study_2023
+name: Peripheral T-cell example
+description: Bulk RNA example
+add_global_case_list: true
+```
+
+If the type of cancer is not one of those already defined in cBioportal, a `meta-cancer_type.txt` file is required.
+
+```{r}
+create_cancer_type(
+  folder_path = dir_out,
+  type_of_cancer = "ptcls", # as listed in the meta-study.txt
+  name = "Peripheral T-cell Lymphoma",
+  dedicated_color = "HotPink",
+  parent_type_of_cancer = "Lymphoma")
+```
+
+## Clinical files
+
+To be continued...
