@@ -1,43 +1,4 @@
-# meta_study
-
-    Code
-      expected_meta
-    Output
-                                   type_of_cancer..ptcls
-      1 cancer_study_identifier: cancer_study_identifier
-      2                  name: Peripheral T-cell Example
-      3                    description: Bulk RNA example
-
-# snapshot_meta
-
-    Code
-      expected_meta
-    Output
-                                   type_of_cancer..ptcls
-      1 cancer_study_identifier: cancer_study_identifier
-      2                  name: Peripheral T-cell Example
-      3                    description: Bulk RNA example
-
-# cancer_type
-
-    Code
-      expected_meta_cancer_type
-    Output
-        genetic_alteration_type..CANCER_TYPE
-      1                datatype: CANCER_TYPE
-      2       data_filename: cancer_type.txt
-
----
-
-    Code
-      expected_cancer_type
-    Output
-                   type_of_cancer..ptcls
-      1 name: Peripheral T-cell Lymphoma
-      2         dedicated_color: HotPink
-      3  parent_type_of_cancer: Lymphoma
-
-# clinical tabs
+# clinical sample tabs
 
     Code
       expected_meta_clinical_sample
@@ -118,4 +79,55 @@
       30                                 48h              VEH
       31                                 48h           DRUG_A
       32                                 48h           DRUG_A
+
+# clinical patient tabs
+
+    Code
+      expected_meta_clinical_patient
+    Output
+                                                 V1
+      1 cancer_study_identifier: ptcls_example_2023
+      2           genetic_alteration_type: CLINICAL
+      3               datatype:  PATIENT_ATTRIBUTES
+      4    data_filename: data_clinical_patient.txt
+
+---
+
+    Code
+      expected_data_clinical_patient
+    Output
+                  V1          V2
+      1  #Patient ID    Cellline
+      2  #patient id cellline id
+      3      #STRING      STRING
+      4           #1           1
+      5  #PATIENT_ID    CELLLINE
+      6            A           A
+      7            A           A
+      8            A           A
+      9            A           A
+      10           A           A
+      11           A           A
+      12           B           B
+      13           B           B
+      14           B           B
+      15           B           B
+      16           C           C
+      17           C           C
+      18           C           C
+      19           C           C
+      20           D           D
+      21           D           D
+      22           D           D
+      23           D           D
+      24           E           E
+      25           E           E
+      26           E           E
+      27           E           E
+      28           E           E
+      29           E           E
+      30           F           F
+      31           F           F
+      32           F           F
+      33           F           F
 

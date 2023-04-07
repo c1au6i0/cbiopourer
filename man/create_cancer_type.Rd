@@ -27,7 +27,7 @@ the cBioPortal.}
 given cancer type at "root" level in the "studies oncotree" that will be generated in the homepage (aka query page) of the portal.}
 }
 \value{
-Write 2 tab delimited file in \code{folder_path}.
+Write 2 tab delimited files in \code{folder_path}.
 }
 \description{
 cBioPortal Doc indicates that "If the type_of_cancer specified in the \code{meta_study.txt} does not yet exist in the type_of_cancer database table,

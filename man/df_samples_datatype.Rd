@@ -11,6 +11,6 @@ An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) w
 df_samples_datatype
 }
 \description{
-An example dataframe of sample info datatype to be used
+An example dataframe of the sample datatype to be used
 }
 \keyword{datasets}

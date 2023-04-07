@@ -29,7 +29,7 @@ create_clinical(
 \item{clinical_meta}{A dataframe with a column \code{var_int} containing \code{colnames(clinical_dat)}, a column \code{description} with description of variable.}
 }
 \value{
-Write 2 tab delimited file in \code{folder_path}.
+Write 2 tab delimited files in \code{folder_path}.
 }
 \description{
 Create clinical files \code{meta_clinical_sample.txt} or \code{meta_clinical_patient.txt} and relative data files \code{data_clinical_patient.txt} or

@@ -39,7 +39,8 @@ create_meta_study(
 
 \item{tags_file}{The file name containing custom study tags for the study tags.}
 
-\item{reference_genome}{The study reference genome (e.g. hg19, hg38). Without specifying this property, the study will be assigned to the reference genome specified in portal.properties (property ucsc.build).}
+\item{reference_genome}{The study reference genome (e.g. hg19, hg38).
+Without specifying this property, the study will be assigned to the reference genome specified in portal.properties (property ucsc.build).}
 }
 \value{
 Write a tab delimited file in \code{folder_path}.

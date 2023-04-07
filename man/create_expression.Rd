@@ -46,7 +46,7 @@ this study contains GSVA data. Should contain stable_id of the expression file f
 \item{gene_panel}{Optional gene panel stable id.}
 }
 \value{
-Write 2 tab delimited file in \code{folder_path}.
+Write 2 tab delimited files in \code{folder_path}.
 }
 \description{
 Create expression files \code{meta_clinical_sample.txt} and relative data files \code{data_expression.txt}.

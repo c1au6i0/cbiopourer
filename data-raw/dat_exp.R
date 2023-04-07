@@ -274,7 +274,13 @@ df_samples_datatype <- tribble(
   "Treatment", "drug admnistered", "STRING", 1, "TREAT"
 )
 
-usethis::use_data(df_samples, stable_id_table, counts, df_samples_datatype, internal = FALSE, overwrite = TRUE)
+df_patients_datatype <-     tribble(
+  ~var_int, ~description, ~datatype, ~attr_priority, ~attr_name,
+  "Patient ID", "patient id", "STRING", 1, "PATIENT_ID",
+  "Cellline", "cellline id", "STRING", 1, "CELLLINE"
+)
+
+usethis::use_data(df_samples, stable_id_table, counts, df_patients_datatype, df_samples_datatype, internal = FALSE, overwrite = TRUE)
 
 
 

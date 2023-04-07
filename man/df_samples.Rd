@@ -5,7 +5,7 @@
 \alias{df_samples}
 \title{df_samples}
 \format{
-An object of class \code{data.frame} with 28 rows and 4 columns.
+An object of class \code{data.frame} with 28 rows and 7 columns.
 }
 \usage{
 df_samples

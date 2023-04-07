@@ -1,4 +1,0 @@
-type_of_cancer: ptcls
-name: Peripheral T-cell Lymphoma
-dedicated_color: HotPink
-parent_type_of_cancer: Lymphoma

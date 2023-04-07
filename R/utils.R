@@ -67,7 +67,7 @@ create_cancer_type <- function(
   all_args <- all_args[!names(all_args) %in% "folder_path"]
 
   file_path_meta <- fs::path(folder_path, "meta_cancer_type.txt")
-  cat("genetic_alteration_type: CANCER_TYPE\ndatatype: CANCER_TYPE\ndata_filename: cancer_type.txt", file = file_path_meta)
+  cat("genetic_alteration_type: CANCER_TYPE\ndatatype: CANCER_TYPE\ndata_filename: cancer_type.txt\n", file = file_path_meta)
 
   cli::cli_alert("File {.file {file_path_meta}} written.")
 
@@ -188,6 +188,7 @@ create_expression <- function(
     expr_matrix,
     gene_id_type,
     gene_panel = NULL) {
+
   required_arg <- c(
     "cancer_study_identifier",
     "datatype",

@@ -20,5 +20,11 @@
 
 #' df_samples_datatype
 #'
-#' An example dataframe of sample info datatype to be used
+#' An example dataframe of the sample datatype to be used
 "df_samples_datatype"
+
+#' df_patients_datatype
+#'
+#' An example dataframe of the sample datatype to be used
+"df_patients_datatype"
+
