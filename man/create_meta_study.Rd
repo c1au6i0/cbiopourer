@@ -5,7 +5,7 @@
 \title{create meta study}
 \usage{
 create_meta_study(
-  folder_path = getwd(),
+  folder_path,
   type_of_cancer,
   cancer_study_identifier,
   name,
@@ -49,5 +49,5 @@ Write a tab delimited file in \code{folder_path}.
 create meta study
 }
 \seealso{
-https://docs.cbioportal.org/file-formats/#cancer-study
+\url{https://docs.cbioportal.org/file-formats/#cancer-study}
 }

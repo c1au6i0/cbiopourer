@@ -34,5 +34,5 @@ cBioPortal Doc indicates that "If the type_of_cancer specified in the \code{meta
 a meta_cancer_type.txt file is also mandatory." The function creates the meta file \code{meta_cancer_type.txt} and the data file associated with it \code{cancer_type.txt}.
 }
 \seealso{
-https://docs.cbioportal.org/file-formats/#cancer-study
+\url{https://docs.cbioportal.org/file-formats/#cancer-study}
 }

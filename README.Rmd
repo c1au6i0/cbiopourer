@@ -18,7 +18,8 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of cbiopourer is to facilitate the creation of meta-data for data injestion of studies in cBioportal. It helps pour data into cBioportal.
+The goal of `cbiopourer `is to facilitate the creation of the files used for ingesting studies into cBioportal. It helps pour data into cBioportal.
+A detailed explanation of the file formats can be found in https://docs.cbioportal.org/file-formats/#expression-data
 
 ## Installation
 
@@ -28,3 +29,29 @@ You can install the development version of cbiopourer from [GitHub](https://gith
 # install.packages("devtools")
 devtools::install_github("c1au6i0/cbiopourer")
 ```
+
+## Use 
+
+The meta_study, meta_clinical and the respective clinical data are required to load a study into the portal. The next sessions describe how to create those files using `cbiopourer`
+
+
+### Meta Study
+
+The meta cancer study (`meta_study.txt` contains metadata about the cancer study.
+
+```{r}
+library(cbiopourer)
+
+# the Identifier for the study
+cancer_study_identifier <- 
+  
+create_meta_study(
+  folder_path = dir_out,
+  type_of_cancer = "ptcls",
+  cancer_study_identifier = cancer_study_identifier,
+  name = "Peripheral T-cell Example",
+  description = "Bulk RNA example"
+)
+```
+
+

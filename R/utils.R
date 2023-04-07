@@ -12,10 +12,10 @@
 #' @param tags_file The file name containing custom study tags for the study tags.
 #' @param reference_genome The study reference genome (e.g. hg19, hg38).
 #'   Without specifying this property, the study will be assigned to the reference genome specified in portal.properties (property ucsc.build).
-#' @seealso https://docs.cbioportal.org/file-formats/#cancer-study
+#' @seealso \url{https://docs.cbioportal.org/file-formats/#cancer-study}
 #' @return Write a tab delimited file in `folder_path`.
 #' @export
-create_meta_study <- function(folder_path = getwd(),
+create_meta_study <- function(folder_path,
                               type_of_cancer,
                               cancer_study_identifier,
                               name,
@@ -52,7 +52,7 @@ create_meta_study <- function(folder_path = getwd(),
 #'    the cBioPortal.
 #' @param parent_type_of_cancer The type_of_cancer field of the cancer type of which this is a subtype, e.g., "Breast". ℹ️ : you can set parent to tissue, which is the reserved word to place the
 #'    given cancer type at "root" level in the "studies oncotree" that will be generated in the homepage (aka query page) of the portal.
-#' @seealso https://docs.cbioportal.org/file-formats/#cancer-study
+#' @seealso \url{https://docs.cbioportal.org/file-formats/#cancer-study}
 #' @return Write 2 tab delimited files in `folder_path`.
 #' @export
 create_cancer_type <- function(
@@ -80,7 +80,7 @@ create_cancer_type <- function(
 }
 
 
-#' create  clinical files
+#' create clinical files
 #'
 #' Create clinical files `meta_clinical_sample.txt` or `meta_clinical_patient.txt` and relative data files `data_clinical_patient.txt` or
 #'  `data_clinical_sample.txt`
@@ -96,7 +96,7 @@ create_cancer_type <- function(
 #' @details
 #' See Note on survival plots in https://docs.cbioportal.org/file-formats/#cancer-study for additional details on
 #' survival plots.
-#' @seealso https://docs.cbioportal.org/file-formats/#cancer-study
+#' @seealso \url{https://docs.cbioportal.org/file-formats/#clinical-data}
 #' @return Write 2 tab delimited files in `folder_path`.
 #' @export
 create_clinical <- function(
@@ -172,7 +172,7 @@ create_clinical <- function(
 #' @param expr_matrix  A matrix with expression data.
 #' @param gene_id_type Either "hugo" or "entrez".
 #' @param gene_panel Optional gene panel stable id.
-#' @seealso https://docs.cbioportal.org/file-formats/#cancer-study
+#' @seealso \url{https://docs.cbioportal.org/file-formats/#expression-data}
 #' @return Write 2 tab delimited files in `folder_path`.
 #' @export
 create_expression <- function(

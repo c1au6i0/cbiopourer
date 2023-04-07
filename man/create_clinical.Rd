@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{create_clinical}
 \alias{create_clinical}
-\title{create  clinical files}
+\title{create clinical files}
 \usage{
 create_clinical(
   folder_path,
@@ -40,5 +40,5 @@ See Note on survival plots in https://docs.cbioportal.org/file-formats/#cancer-s
 survival plots.
 }
 \seealso{
-https://docs.cbioportal.org/file-formats/#cancer-study
+\url{https://docs.cbioportal.org/file-formats/#clinical-data}
 }

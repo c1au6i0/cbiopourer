@@ -52,5 +52,5 @@ Write 2 tab delimited files in \code{folder_path}.
 Create expression files \code{meta_clinical_sample.txt} and relative data files \code{data_expression.txt}.
 }
 \seealso{
-https://docs.cbioportal.org/file-formats/#cancer-study
+\url{https://docs.cbioportal.org/file-formats/#expression-data}
 }
