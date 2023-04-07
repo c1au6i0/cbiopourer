@@ -10,7 +10,8 @@
 #' @param groups When using an authenticating cBioPortal, lists the user-groups that are allowed access to this study. Multiple groups are separated with a semicolon ";". The study will be invisible to users not in at least one of the listed groups, as if it wasn't loaded at all. e.g., "PUBLIC;GDAC;SU2C-PI3K". see User-Authorization for more information on groups.
 #' @param add_global_case_list set to 'true' if you would like the "All samples" case list to be generated automatically for you. See also Case lists.
 #' @param tags_file The file name containing custom study tags for the study tags.
-#' @param reference_genome The study reference genome (e.g. hg19, hg38). Without specifying this property, the study will be assigned to the reference genome specified in portal.properties (property ucsc.build).
+#' @param reference_genome The study reference genome (e.g. hg19, hg38).
+#'   Without specifying this property, the study will be assigned to the reference genome specified in portal.properties (property ucsc.build).
 #' @seealso https://docs.cbioportal.org/file-formats/#cancer-study
 #' @return Write a tab delimited file in `folder_path`.
 #' @export
@@ -52,7 +53,7 @@ create_meta_study <- function(folder_path = getwd(),
 #' @param parent_type_of_cancer The type_of_cancer field of the cancer type of which this is a subtype, e.g., "Breast". ℹ️ : you can set parent to tissue, which is the reserved word to place the
 #'    given cancer type at "root" level in the "studies oncotree" that will be generated in the homepage (aka query page) of the portal.
 #' @seealso https://docs.cbioportal.org/file-formats/#cancer-study
-#' @return Write 2 tab delimited file in `folder_path`.
+#' @return Write 2 tab delimited files in `folder_path`.
 #' @export
 create_cancer_type <- function(
     folder_path,
@@ -96,7 +97,7 @@ create_cancer_type <- function(
 #' See Note on survival plots in https://docs.cbioportal.org/file-formats/#cancer-study for additional details on
 #' survival plots.
 #' @seealso https://docs.cbioportal.org/file-formats/#cancer-study
-#' @return Write 2 tab delimited file in `folder_path`.
+#' @return Write 2 tab delimited files in `folder_path`.
 #' @export
 create_clinical <- function(
     folder_path,
@@ -172,7 +173,7 @@ create_clinical <- function(
 #' @param gene_id_type Either "hugo" or "entrez".
 #' @param gene_panel Optional gene panel stable id.
 #' @seealso https://docs.cbioportal.org/file-formats/#cancer-study
-#' @return Write 2 tab delimited file in `folder_path`.
+#' @return Write 2 tab delimited files in `folder_path`.
 #' @export
 create_expression <- function(
     folder_path,

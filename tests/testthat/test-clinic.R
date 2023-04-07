@@ -17,10 +17,10 @@ create_meta_study(
   description = "Bulk RNA example"
 )
 
-expected_tab <- read.delim(path(dir_out, "meta_study.txt"))
+expected_meta <- read.delim(path(dir_out, "meta_study.txt"))
 
 test_that("meta_study", {
-   expect_snapshot(expected_tab)
+   expect_snapshot(expected_meta)
    expect_error(
       create_meta_study(
         folder_path = dir_out,
@@ -30,6 +30,36 @@ test_that("meta_study", {
 
 test_that("snapshot_meta", {
   expect_snapshot(expected_tab)
+})
+
+# @@@@@@@@@@@@@@@@
+# Cancer Type ----
+# @@@@@@@@@@@@@@@@
+
+create_cancer_type(
+  folder_path = dir_out,
+  type_of_cancer = "ptcls",
+  name = "Peripheral T-cell Lymphoma",
+  dedicated_color = "HotPink",
+  parent_type_of_cancer = "Lymphoma"
+)
+
+
+expected_meta_cancer_type <- read.delim(path(dir_out, "meta_cancer_type.txt"))
+expected_cancer_type <- read.delim(path(dir_out, "cancer_type.txt"))
+
+
+test_that("cancer_type", {
+  expect_snapshot(expected_meta_cancer_type)
+  expect_snapshot(expected_cancer_type)
+  expect_error(
+    create_cancer_type(
+      folder_path = dir_out,
+      name = "Peripheral T-cell Lymphoma",
+      dedicated_color = "HotPink",
+      parent_type_of_cancer = "Lymphoma"
+    ),
+    "required")
 })
 
 
