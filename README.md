@@ -60,7 +60,7 @@ create_meta_study(
   name = "Peripheral T-cell example",
   description = "Bulk RNA example"
 )
-#> → File ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/Rtmpuag11w/meta_study.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/Rtmpuag11w/meta_study.txt]8;;' written.
+#> → File ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpquupUy/meta_study.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpquupUy/meta_study.txt]8;;' written.
 ```
 
 The function generates a file in the format accepted by cBioportal.
@@ -81,8 +81,8 @@ create_cancer_type(
   name = "Peripheral T-cell Lymphoma",
   dedicated_color = "HotPink",
   parent_type_of_cancer = "Lymphoma")
-#> → File ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/Rtmpuag11w/meta_cancer_type.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/Rtmpuag11w/meta_cancer_type.txt]8;;' written.
-#> → File ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/Rtmpuag11w/cancer_type.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/Rtmpuag11w/cancer_type.txt]8;;' written.
+#> → File ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpquupUy/meta_cancer_type.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpquupUy/meta_cancer_type.txt]8;;' written.
+#> → File ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpquupUy/cancer_type.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpquupUy/cancer_type.txt]8;;' written.
 ```
 
 ## Clinical files
@@ -140,8 +140,8 @@ dir_out <- tempdir()
     clinical_meta = df_patients_datatype,
     clinical_dat = df_patients)
 #> → Integrity of data checked.
-#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/Rtmpuag11w/meta_clinical_patient.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/Rtmpuag11w/meta_clinical_patient.txt]8;;' has been generated.
-#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/Rtmpuag11w/data_clinical_patient.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/Rtmpuag11w/data_clinical_patient.txt]8;;' has been generated.
+#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpquupUy/meta_clinical_patient.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpquupUy/meta_clinical_patient.txt]8;;' has been generated.
+#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpquupUy/data_clinical_patient.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpquupUy/data_clinical_patient.txt]8;;' has been generated.
 ```
 
 The clinical data will have a header formated as required by cBioportal.
@@ -211,8 +211,8 @@ create_clinical(
   clinical_meta = df_samples_datatype,
   clinical_dat = df_samples)
 #> → Integrity of data checked.
-#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/Rtmpuag11w/meta_clinical_sample.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/Rtmpuag11w/meta_clinical_sample.txt]8;;' has been generated.
-#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/Rtmpuag11w/data_clinical_sample.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/Rtmpuag11w/data_clinical_sample.txt]8;;' has been generated.
+#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpquupUy/meta_clinical_sample.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpquupUy/meta_clinical_sample.txt]8;;' has been generated.
+#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpquupUy/data_clinical_sample.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpquupUy/data_clinical_sample.txt]8;;' has been generated.
 ```
 
 The clinical sample data file produced is as follow:
@@ -234,27 +234,41 @@ counts. See details in
 ``` r
 data("counts")
 head(counts)
-#>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14]
-#> [1,] 1615  349 2188  315 1896 1590 1110 1251 1859  -643 -1175   314    63   510
-#> [2,]  693 1863 1586  870 1915 1859  -68 1863 1329  -156  1737  -772   398  -368
-#> [3,] 2002 1657 1120  251  697   71 -912 1833 1250  1327  1265  1813   844  -934
-#> [4,] 3137 1250 -480  925 1899  328 1467  143  945   573   895  1141  1827  1135
-#> [5,] 1226 1239  -17  744  839  385  799   58  368   591  1317  1166  1264   975
-#> [6,]  241  505  721 1751 1365 1899   72  195 1895  1979  2201   202   434   652
-#>      [,15] [,16] [,17] [,18] [,19] [,20] [,21] [,22] [,23] [,24] [,25] [,26]
-#> [1,]   474   867  -244  -431  -882   759  1385   -92  2019   977  1038   185
-#> [2,]  -175   671  1655   829  2138  1047   966  1002   888  1002   782   267
-#> [3,]  1619  1438  1033  2212  1260  1095   626  1686   294  2040   577   899
-#> [4,]  1126  1136  1059   144    46   635   348  1202  1316  1224  -468   856
-#> [5,]  1085   463  1695  1959   900   855  1203  1120    58  1151  1039  1262
-#> [6,]  1681  2030  1140  -161   535  1654   320   651  -239  1382   999    -6
-#>      [,27] [,28]
-#> [1,]   660  1205
-#> [2,]   778  2058
-#> [3,]  1184   265
-#> [4,]   813   445
-#> [5,]   865   569
-#> [6,]   117   978
+#>         A_48h_VEH A_48h_VEH A_48h_DRUG_A A_48h_DRUG_A A_48h_DRUG_B A_48h_DRUG_B
+#> CAMK1        1923      1016         1748         1104         1272         1233
+#> PANX2        2042      1272          459         -413         1717          317
+#> P2RX1        1167      1109          261          706         1530         1596
+#> EPB41L3       501      1455          712         1475          548          615
+#> METRN         -86      -729         2447         1741         1065         1406
+#> PCP2          710       381         1365         1154         -141         1722
+#>         B_48h_VEH B_48h_VEH B_48h_DRUG_A B_48h_DRUG_A C_48h_VEH C_48h_VEH
+#> CAMK1        1546       852          139         1121      1233       570
+#> PANX2         -11       291         1617          964      1108      1048
+#> P2RX1        1506       631          222         1711      1215      1202
+#> EPB41L3      2297       539          850          598       666        68
+#> METRN          40      1634           24         1777      1775       174
+#> PCP2          444      1384         1981         1360      1200      1109
+#>         C_48h_DRUG_A C_48h_DRUG_A D_48h_VEH D_48h_VEH D_48h_DRUG_A D_48h_DRUG_A
+#> CAMK1           1021         2447       577       210         1633          765
+#> PANX2            944         1652      1511       796          391         1285
+#> P2RX1           -158          968      2897      1282         1641         1182
+#> EPB41L3        -1309         2197       687      1694         1516          828
+#> METRN           1577          605      1448       705         1219         1213
+#> PCP2            2106         3009       130      1682          573          706
+#>         E_48h_VEH E_48h_VEH E_48h_DRUG_A E_48h_DRUG_A E_48h_DRUG_B E_48h_DRUG_B
+#> CAMK1         634      -285         1246         1586         -748         1634
+#> PANX2         492      1428          525         1150          185          355
+#> P2RX1         818      1932         1308          652           99         1485
+#> EPB41L3       321      1256         2009          670          649          816
+#> METRN        1278      1722           -4         -286         -259          959
+#> PCP2         2148       968         1687         1065         1322          200
+#>         F_48h_VEH F_48h_VEH F_48h_DRUG_A F_48h_DRUG_A
+#> CAMK1        1468      2085         1364         1787
+#> PANX2         389      1485          501         1777
+#> P2RX1         740       281         3088         1759
+#> EPB41L3      1538       153         2354          799
+#> METRN         -14      1826         1522         2145
+#> PCP2         1522       250         1909         1644
 ```
 
 Few other info are required and are supplid to the `create_expression`
@@ -275,6 +289,6 @@ create_expression(
   gene_panel = NULL,
   gene_id_type = "hugo"
 )
-#> → The file ']8;;file:///Users/heverz/Documents/R_projects/inghirami_bioportal/code/cbiopourer/meta_expression.txtmeta_expression.txt]8;;' has been generated.
-#> → The file ']8;;file:///Users/heverz/Documents/R_projects/inghirami_bioportal/code/cbiopourer/data_expression.txtdata_expression.txt]8;;' has been generated.
+#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpquupUy/meta_expression.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpquupUy/meta_expression.txt]8;;' has been generated.
+#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpquupUy/data_expression.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpquupUy/data_expression.txt]8;;' has been generated.
 ```
