@@ -80,7 +80,7 @@ create_cancer_type(
 
 ## Clinical files
 
-According to cBioportal documentation, "clinical data is used to capture both clinical attributes and the mapping between patient and sample IDs:. In most cases, you will need to provide information for both the patients and their corresponding samples, which requires the creation of metadata and data files (for a total of 4 files).
+According to cBioportal documentation, "clinical data is used to capture both clinical attributes and the mapping between patient and sample IDs". In most cases, you will need to provide information for both the patients and their corresponding samples, which requires the creation of metadata and data files (for a total of 4 files).
 
 Let's suppose that our clinical informatian indicates the id of the patient and the relative celline derived from the patient.
 
