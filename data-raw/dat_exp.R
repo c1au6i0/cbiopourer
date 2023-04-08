@@ -262,6 +262,9 @@ counts <- matrix(ceiling(rnorm(length(df_samples$SAMPLE_ID) * length(genes), mea
   ncol = length(df_samples$SAMPLE_ID), nrow = length(genes)
 )
 
+row.names(counts) <-  genes
+colnames(counts) <- df_samples$SAMPLE_ID
+
 
 df_samples_datatype <- tribble(
   ~var_int, ~description, ~datatype, ~attr_priority, ~attr_name,
