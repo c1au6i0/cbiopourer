@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # cbiopourer
 
 <!-- badges: start -->
+[![Codecov test coverage](https://codecov.io/gh/c1au6i0/cbiopourer/branch/main/graph/badge.svg)](https://app.codecov.io/gh/c1au6i0/cbiopourer?branch=main)
 <!-- badges: end -->
 
 The purpose of cbiopourer is to simplify the process of generating files for importing studies into cBioportal. This package streamlines the transfer of data into cBioportal. For more information on the accepted file formats, please refer to https://docs.cbioportal.org/file-formats/#expression-data.
