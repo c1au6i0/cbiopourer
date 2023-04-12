@@ -50,7 +50,7 @@ create_cancer_type(
 suppressWarnings(
 expected_meta_cancer_type <- read.delim(path(dir_out, "meta_cancer_type.txt"), header = FALSE)
 )
-expected_cancer_type <- read.delim(path(dir_out, "cancer_type.txt"), header = FALSE)
+expected_cancer_type <- read.delim(path(dir_out, "data_cancer_type.txt"), header = FALSE)
 
 test_that("cancer_type", {
   expect_snapshot(expected_meta_cancer_type)

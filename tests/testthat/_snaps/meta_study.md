@@ -28,16 +28,13 @@
                                           V1
       1 genetic_alteration_type: CANCER_TYPE
       2                datatype: CANCER_TYPE
-      3       data_filename: cancer_type.txt
+      3  data_filename: data_cancer_type.txt
 
 ---
 
     Code
       expected_cancer_type
     Output
-                                      V1
-      1            type_of_cancer: ptcls
-      2 name: Peripheral T-cell Lymphoma
-      3         dedicated_color: HotPink
-      4  parent_type_of_cancer: Lymphoma
+           V1                         V2      V3       V4
+      1 ptcls Peripheral T-cell Lymphoma HotPink Lymphoma
 

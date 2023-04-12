@@ -17,7 +17,7 @@
       1    #sample id patient id cancer type       cancer type detailed cellline id
       2       #STRING     STRING      STRING                     STRING      STRING
       3            #1          1           1                          1           1
-      4    #SAMPLE_ID PATIENT_ID CANCER_TYPE       CANCER_TYPE_DETAILED    CELLLINE
+      4     SAMPLE_ID PATIENT_ID CANCER_TYPE       CANCER_TYPE_DETAILED    CELLLINE
       5     A_48h_VEH          A    Lymphoma Peripheral T-cell Lymphoma           A
       6     A_48h_VEH          A    Lymphoma Peripheral T-cell Lymphoma           A
       7  A_48h_DRUG_A          A    Lymphoma Peripheral T-cell Lymphoma           A
@@ -101,7 +101,7 @@
       2  #patient id cellline id
       3      #STRING      STRING
       4           #1           1
-      5  #PATIENT_ID    CELLLINE
+      5   PATIENT_ID    CELLLINE
       6            A           A
       7            A           A
       8            A           A

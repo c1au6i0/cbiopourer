@@ -137,7 +137,7 @@ create_clinical <- function(
   clinical_dat <- clinical_dat[, clinical_meta$attr_name]
   clinical_meta_t <- as.data.frame(t(clinical_meta))
   clinical_meta_t$V1 <- paste0("#", clinical_meta_t$V1)
-
+  clinical_meta_t$V1[length(clinical_meta_t$V1)] <- gsub("^#" ,  "", clinical_meta_t$V1[length(clinical_meta_t$V1)])
 
   # take header from first column and remove it
   names(clinical_meta_t) <- clinical_meta_t[1, ]
