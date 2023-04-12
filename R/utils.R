@@ -227,6 +227,6 @@ create_expression <- function(
   }
 
   file_path_data <- fs::path(folder_path, "data_expression.txt")
-  utils::write.table(expr_df_r, file = file_path_data, quote = FALSE, row.names = FALSE, col.names = FALSE, sep = "\t")
+  utils::write.table(expr_df_r, file = file_path_data, quote = FALSE, row.names = FALSE, col.names = TRUE, sep = "\t")
   cli::cli_alert("The file {.file {file_path_data}} has been generated.")
 }
