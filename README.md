@@ -64,7 +64,7 @@ create_meta_study(
   name = "Peripheral T-cell example",
   description = "Bulk RNA example"
 )
-#> → File ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpkCdf3R/meta_study.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpkCdf3R/meta_study.txt]8;;' written.
+#> → File ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpT6VmDs/meta_study.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpT6VmDs/meta_study.txt]8;;' written.
 ```
 
 The function generates a file in the format accepted by cBioportal.
@@ -85,8 +85,8 @@ create_cancer_type(
   name = "Peripheral T-cell Lymphoma",
   dedicated_color = "HotPink",
   parent_type_of_cancer = "Lymphoma")
-#> → File ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpkCdf3R/meta_cancer_type.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpkCdf3R/meta_cancer_type.txt]8;;' written.
-#> → File ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpkCdf3R/cancer_type.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpkCdf3R/cancer_type.txt]8;;' written.
+#> → File ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpT6VmDs/meta_cancer_type.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpT6VmDs/meta_cancer_type.txt]8;;' written.
+#> → File ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpT6VmDs/cancer_type.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpT6VmDs/cancer_type.txt]8;;' written.
 ```
 
 ## Clinical files
@@ -113,9 +113,12 @@ glimpse(df_patients)
 ```
 
 The following attributes regarding the 2 columns of `df_patients` are
-required to generate the appropriate files: - attribute Display Names. -
-the attribute Descriptions. - the attribute Datatype (STRING, NUMBER,
-BOOLEAN). - the attribute Priority.
+required to generate the appropriate files:
+
+- attribute Display Names.
+- the attribute Descriptions.
+- the attribute Datatype (STRING, NUMBER, BOOLEAN).
+- the attribute Priority.
 
 We generate the info using.
 
@@ -144,8 +147,8 @@ dir_out <- tempdir()
     clinical_meta = df_patients_datatype,
     clinical_dat = df_patients)
 #> → Integrity of data checked.
-#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpkCdf3R/meta_clinical_patient.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpkCdf3R/meta_clinical_patient.txt]8;;' has been generated.
-#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpkCdf3R/data_clinical_patient.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpkCdf3R/data_clinical_patient.txt]8;;' has been generated.
+#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpT6VmDs/meta_clinical_patient.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpT6VmDs/meta_clinical_patient.txt]8;;' has been generated.
+#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpT6VmDs/data_clinical_patient.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpT6VmDs/data_clinical_patient.txt]8;;' has been generated.
 ```
 
 The clinical data will have a header formated as required by cBioportal.
@@ -215,8 +218,8 @@ create_clinical(
   clinical_meta = df_samples_datatype,
   clinical_dat = df_samples)
 #> → Integrity of data checked.
-#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpkCdf3R/meta_clinical_sample.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpkCdf3R/meta_clinical_sample.txt]8;;' has been generated.
-#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpkCdf3R/data_clinical_sample.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpkCdf3R/data_clinical_sample.txt]8;;' has been generated.
+#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpT6VmDs/meta_clinical_sample.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpT6VmDs/meta_clinical_sample.txt]8;;' has been generated.
+#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpT6VmDs/data_clinical_sample.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpT6VmDs/data_clinical_sample.txt]8;;' has been generated.
 ```
 
 The clinical sample data file produced is as follow:
@@ -293,6 +296,6 @@ create_expression(
   gene_panel = NULL,
   gene_id_type = "hugo"
 )
-#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpkCdf3R/meta_expression.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpkCdf3R/meta_expression.txt]8;;' has been generated.
-#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpkCdf3R/data_expression.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpkCdf3R/data_expression.txt]8;;' has been generated.
+#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpT6VmDs/meta_expression.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpT6VmDs/meta_expression.txt]8;;' has been generated.
+#> → The file ']8;;file:///var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpT6VmDs/data_expression.txt/var/folders/bp/fpwcfq1563l21rz5gdcsfcsw0000gn/T/RtmpT6VmDs/data_expression.txt]8;;' has been generated.
 ```
