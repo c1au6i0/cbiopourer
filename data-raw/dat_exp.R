@@ -1,6 +1,9 @@
 ## code to prepare `DATASET` dataset goes here
 library(tidyverse)
 
+library(AnnotationDbi)
+library(org.Hs.eg.db)
+
 
 
 # This is taken from cBioportal WebSite
@@ -254,7 +257,7 @@ df_samples <-
 
 df_samples <- df_samples |>
   separate(SAMPLE_ID, into = c("CELLLINE", "TIME_TREAT", "TREAT"), remove = FALSE, extra = "merge") |>
-  select(c("SAMPLE_ID", "PATIENT_ID", "CELLLINE", "TIME_TREAT", "TREAT",
+  dplyr::select(c("SAMPLE_ID", "PATIENT_ID", "CELLLINE", "TIME_TREAT", "TREAT",
            "CANCER_TYPE", "CANCER_TYPE_DETAILED"))
 
 
@@ -262,9 +265,23 @@ counts <- matrix(ceiling(rnorm(length(df_samples$SAMPLE_ID) * length(genes), mea
   ncol = length(df_samples$SAMPLE_ID), nrow = length(genes)
 )
 
-row.names(counts) <-  genes
+
 colnames(counts) <- df_samples$SAMPLE_ID
 
+
+entrez_genes <- mapIds(org.Hs.eg.db,
+                       keys =  genes,
+                       keytype = "SYMBOL",
+                       column = "ENTREZID",
+                       columns =  c("SYMBOL","ENTREZID"),
+                       multiVals = "first"
+)
+
+entrez_genes_df <- data.frame( Hugo_Symbol = names(entrez_genes), Entrez_Gene_Id = entrez_genes)
+
+df_expr <- cbind(entrez_genes_df, counts)
+
+row.names(df_expr) <-  NULL
 
 df_samples_datatype <- tribble(
   ~var_int, ~description, ~datatype, ~attr_priority, ~attr_name,
@@ -283,7 +300,7 @@ df_patients_datatype <-     tribble(
   "Cellline", "cellline id", "STRING", 1, "CELLLINE"
 )
 
-usethis::use_data(df_samples, stable_id_table, counts, df_patients_datatype, df_samples_datatype, internal = FALSE, overwrite = TRUE)
+usethis::use_data(df_samples, stable_id_table, df_expr, df_patients_datatype, df_samples_datatype, internal = FALSE, overwrite = TRUE)
 
 
 

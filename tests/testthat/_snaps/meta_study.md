@@ -3,22 +3,22 @@
     Code
       expected_meta
     Output
-                                                      V1
-      1                            type_of_cancer: ptcls
-      2 cancer_study_identifier: cancer_study_identifier
-      3                  name: Peripheral T-cell Example
-      4                    description: Bulk RNA example
+                                                 V1
+      1                       type_of_cancer: ptcls
+      2 cancer_study_identifier: ptcls_example_2023
+      3             name: Peripheral T-cell Example
+      4               description: Bulk RNA example
 
 # snapshot_meta
 
     Code
       expected_meta
     Output
-                                                      V1
-      1                            type_of_cancer: ptcls
-      2 cancer_study_identifier: cancer_study_identifier
-      3                  name: Peripheral T-cell Example
-      4                    description: Bulk RNA example
+                                                 V1
+      1                       type_of_cancer: ptcls
+      2 cancer_study_identifier: ptcls_example_2023
+      3             name: Peripheral T-cell Example
+      4               description: Bulk RNA example
 
 # cancer_type
 

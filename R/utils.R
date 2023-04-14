@@ -166,8 +166,8 @@ create_clinical <- function(
 #' @param show_profile_in_analysis_tab false (you can set to true if Z-SCORE to enable it in the oncoprint, for example).
 #' @param profile_name A name for the expression data, e.g., "mRNA expression (microarray)".
 #' @param profile_description A description of the expression data, e.g., "Expression levels (Agilent microarray).".
-#' @param expr_matrix  A matrix with expression data.
-#' @param gene_id_type Either "hugo" or "entrez".
+#' @param df_expr  A data.frame with at least a column named `Hugo_Symbol` or `Entrez_Gene_Id` with genes names, other colnames of sample ids and relative
+#'    expression data as value.
 #' @param gene_panel Optional gene panel stable id.
 #' @seealso \url{https://docs.cbioportal.org/file-formats/#expression-data}
 #' @return Write 2 tab delimited files in `folder_path`.
@@ -182,8 +182,7 @@ create_expression <- function(
     show_profile_in_analysis_tab = FALSE,
     profile_name,
     profile_description,
-    expr_matrix,
-    gene_id_type,
+    df_expr,
     gene_panel = NULL) {
 
   required_arg <- c(
@@ -191,15 +190,14 @@ create_expression <- function(
     "datatype",
     "stable_id",
     "profile_name",
-    "expr_matrix",
+    "df_expr",
     "profile_description",
-    "folder_path",
-    "gene_id_type"
+    "folder_path"
   )
   all_args <- handler::handle_required_args(required_arg = required_arg, get_arg = TRUE)
 
   arg_val <- all_args[!unlist(lapply(all_args, is.null))]
-  arg_val <- arg_val[!names(arg_val) %in% c("expr_matrix", "folder_path", "gene_id_type")]
+  arg_val <- arg_val[!names(arg_val) %in% c("df_expr", "folder_path")]
 
   out <- paste(names(arg_val), arg_val, sep = ": ")
   out <- c(out, "data_filename: data_expression.txt")
@@ -209,21 +207,17 @@ create_expression <- function(
   cli::cli_alert("The file {.file {file_path}} has been generated.")
 
 
-  check_expr(expr_matrix)
-  if (!gene_id_type %in% c("hugo", "entrez")) cli::cli_abort("The {field gene_id_type} needs to be either 'hugo' or 'entrez")
+  check_expr(df_expr)
 
 
-  expr_df <- data.frame(expr_matrix)
-  expr_df[, "gene"] <- row.names(expr_df)
-  new_order <- c("gene", names(expr_df)[!names(expr_df) %in% "gene"])
-  expr_df_r <- expr_df[, new_order]
-  if (gene_id_type == "hugo") {
-    names(expr_df_r)[1] <- "Hugo_Symbol"
-  } else {
-    names(expr_df_r)[1] <- "Entrez_Gene_Id"
-  }
+  # they need to be in this order and to be first 2 columns
+  # so this is for relocating them if one or both are present
+  gene_col_accepted <-  c("Hugo_Symbol", "Entrez_Gene_Id")
+  names_no_genes <- names(df_expr)[!names(df_expr) %in% c("Hugo_Symbol", "Entrez_Gene_Id")]
+  gene_col_present <- gene_col_accepted[gene_col_accepted %in% names(df_expr)]
+  df_expr_r <-  df_expr[, c(gene_col_present, names_no_genes)]
 
   file_path_data <- fs::path(folder_path, "data_expression.txt")
-  utils::write.table(expr_df_r, file = file_path_data, quote = FALSE, row.names = FALSE, col.names = TRUE, sep = "\t")
+  utils::write.table(df_expr_r, file = file_path_data, quote = FALSE, row.names = FALSE, col.names = TRUE, sep = "\t")
   cli::cli_alert("The file {.file {file_path_data}} has been generated.")
 }

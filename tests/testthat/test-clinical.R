@@ -26,7 +26,7 @@ suppressMessages(
     clinical_dat = df_samples)
 )
 
-expected_meta_clinical_sample <- read.delim(path(dir_out, "meta_clinical_sample.txt"))
+expected_meta_clinical_sample <-read.delim(path(dir_out, "meta_clinical_sample.txt"))
 expected_data_clinical_sample <- read.delim(path(dir_out, "data_clinical_sample.txt"))
 
 

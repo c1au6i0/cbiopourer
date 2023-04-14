@@ -48,8 +48,13 @@ check_clinical <- function(clinical_dat, clinical_meta, datatype) {
 #'
 #' Verify expression data
 #'
-#' @param expr_matrix Dataframe of expression.
+#' @param df_expr Dataframe of expression.
 #' @return stop if requirement are not met
-check_expr <- function(expr_matrix) {
-  if (!"matrix" %in% class(expr_matrix)) cli::cli_abort("The expr_matrix needs to be of class {.field matrix}.")
+check_expr <- function(df_expr) {
+
+  if (!"data.frame" %in% class(df_expr)) cli::cli_abort("The df_expr needs to be of class {.field data.frame}.")
+
+  genes_names <- c("Hugo_Symbol", "Entrez_Gene_Id")
+
+  if( all(!names(df_expr) %in% genes_names)) cli::cli_abort("The df_expr needs to have at least a column named {.field {genes_names}}.")
 }

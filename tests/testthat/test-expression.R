@@ -1,9 +1,10 @@
 library(cbiopourer)
+library(tidyverse)
 library(fs)
 data("df_samples_datatype")
 data("df_samples")
 data("df_patients_datatype")
-data("counts")
+data("df_expr")
 df_patients <- df_samples[, c("PATIENT_ID", "CELLLINE")]
 
 cancer_study_identifier <- "ptcls_example_2023"
@@ -20,9 +21,8 @@ create_expression(
   show_profile_in_analysis_tab = FALSE,
   profile_name = "mRNA expression",
   profile_description = "Expression levels",
-  expr_matrix = counts,
-  gene_panel = NULL,
-  gene_id_type = "hugo"
+  df_expr = df_expr,
+  gene_panel = NULL
 )
 
 

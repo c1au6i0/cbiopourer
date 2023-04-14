@@ -1,7 +1,9 @@
 library(cbiopourer)
+library(testthat)
 data("df_samples_datatype")
 data("df_samples")
-data("counts")
+data("df_expr")
+
 
 test_that("check_clinical", {
   expect_message(check_clinical(clinical_dat = df_samples,
@@ -18,7 +20,11 @@ test_that("check_clinical", {
 })
 
 test_that("check_expr", {
-  expect_silent(check_expr(counts))
-  expect_error(check_expr(as.data.frame(counts)), "matrix")
+  expect_silent(check_expr(df_expr))
+  expect_error(check_expr(df_expr$A_48h_VEH), "data.frame")
+  expect_error(check_expr(df_expr[, !names(df_expr) %in%  c("Hugo_Symbol", "Entrez_Gene_Id")]), "Hugo_Symbol")
 
 })
+
+
+

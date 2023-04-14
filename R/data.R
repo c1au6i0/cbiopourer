@@ -10,8 +10,8 @@
 
 #' counts
 #'
-#' Am example of count matrix with 100 genes and 28 samples. Counts have been generated randomly.
-"counts"
+#' An example of dataframe containing counts with 100 genes and 28 samples. Counts have been generated randomly.
+"df_expr"
 
 #' df_samples
 #'
